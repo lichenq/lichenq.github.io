@@ -4,7 +4,7 @@
   
   <link href="/atom.xml" rel="self"/>
   <link href="http://yoursite.com/"/>
-  <updated>2015-12-02T03:29:51.000Z</updated>
+  <updated>2015-12-02T03:33:58.000Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,30 +15,11 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title><![CDATA[dubbo服务接口使用Multimap(guava)作为返回值的问题]]></title>
-    <link href="http://yoursite.com/2015/12/02/dubbo-multimap-guava/"/>
-    <id>http://yoursite.com/2015/12/02/dubbo-multimap-guava/</id>
-    <published>2015-12-02T03:29:51.000Z</published>
-    <updated>2015-12-02T03:29:51.000Z</updated>
-    <content type="html"><![CDATA[<p>有位同事在使用dubbo的client调用自己编写的一个dubbo服务时，发现服务接口返回的Multimap（guava）里面的数据永远都是空的。接口定义如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">CarTypePictureService</span> </span>&#123;</span><br><span class="line">   <span class="comment">/**</span><br><span class="line">    * 根据查询车型图片信息</span><br><span class="line">    * <span class="doctag">@param</span> btrIds</span><br><span class="line">    * <span class="doctag">@return</span></span><br><span class="line">    */</span></span><br><span class="line">   Multimap&lt;String, CarTypePictureDTO&gt; findCarTypePictureByBtrIds(List&lt;String&gt; btrIds);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>如果把返回类型改成Map，client就可以正常得到服务端返回的数据。因此问题是出在Multimap本身。</p>
-<p>于是看Multimap的源码，服务端是通过HashMultimap.create()创建的Multimap实例，在这个方法中，最终跟到如下代码：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">transient</span> Map&lt;K, Collection&lt;V&gt;&gt; map;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">transient</span> <span class="keyword">int</span> totalSize;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span><br><span class="line"> * Creates a new multimap that uses the provided map.</span><br><span class="line"> *</span><br><span class="line"> * <span class="doctag">@param</span> map place to store the mapping from each key to its corresponding</span><br><span class="line"> *     values</span><br><span class="line"> * <span class="doctag">@throws</span> IllegalArgumentException if &#123;<span class="doctag">@code</span> map&#125; is not empty</span><br><span class="line"> */</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="title">AbstractMapBasedMultimap</span><span class="params">(Map&lt;K, Collection&lt;V&gt;&gt; map)</span> </span>&#123;</span><br><span class="line">  checkArgument(map.isEmpty());</span><br><span class="line">  <span class="keyword">this</span>.map = map;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>private transient Map<k, collection<v="">&gt; map 这个成员变量承载了multimap的数据，而它被transient关键字修饰了，这就意味着这个变量不会被序列化，因此dubbo在序列化服务端返回的Multimap<string, cartypepicturedto="">时，里面的map并没有序列化，client反序列化出来的对象自然也不会有数据了。</string,></k,></p>
-<p>总结：写rpc服务时，接口永远不要返回guava的Multimap类型</p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>有位同事在使用dubbo的client调用自己编写的一个dubbo服务时，发现服务接口返回的Multimap（guava）里面的数据永远都是空的。接口定义如下：<br><figure class="highlight java"><table><tr><td class="]]>
-    </summary>
-    
-  </entry>
-  
-  <entry>
     <title><![CDATA[代码风格指南]]></title>
     <link href="http://yoursite.com/2015/12/02/code-style/"/>
     <id>http://yoursite.com/2015/12/02/code-style/</id>
-    <published>2015-12-02T03:19:42.000Z</published>
-    <updated>2015-12-02T03:19:42.000Z</updated>
+    <published>2015-12-02T03:33:58.000Z</published>
+    <updated>2015-12-02T03:33:58.000Z</updated>
     <content type="html"><![CDATA[<h1 id="代码风格指南">代码风格指南</h1><h2 id="格式">格式</h2><p>待完善</p>
 <h2 id="接口">接口</h2><ol>
 <li>查询类接口直接返回结果类型，如</li>
@@ -60,12 +41,12 @@
 </ol>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">    <span class="comment">/**</span><br><span class="line">     * 根据订单id和填充条件批量查询订单信息</span><br><span class="line">     *</span><br><span class="line">     * <span class="doctag">@param</span> orderIds          订单id列表</span><br><span class="line">     * <span class="doctag">@param</span> orderFillingParam 是否填充相关联的数据</span><br><span class="line">     * <span class="doctag">@return</span></span><br><span class="line">     */</span></span><br><span class="line">    ResultDTO&lt;List&lt;OrderDTO&gt;&gt; queryOrders(List&lt;Integer&gt; orderIds, OrderFillingParam orderFillingParam);</span><br><span class="line">    </span><br><span class="line"><span class="annotation">@Data</span></span><br><span class="line"><span class="annotation">@AllArgsConstructor</span></span><br><span class="line"><span class="annotation">@NoArgsConstructor</span></span><br><span class="line"><span class="annotation">@Builder</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">OrderFillingParam</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     * 是否需要简单的订单明细信息.</span><br><span class="line">     * 并不考虑商品快照(StockSnapShot)和车型信息(CarTypeDTO). 方便统计订单明细的数量等.</span><br><span class="line">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">boolean</span> needMinimumOrderDetail;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     * 是否需要带有商品快照的订单明细.</span><br><span class="line">     * 包括商品快照(StockSnapShot),但不包括车型信息(CarTypeDTO).主要是减少对autoParts的依赖</span><br><span class="line">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">boolean</span> needStockSnapShotOrderDetail;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     * 是否需要完全的订单明细信息. 包括商品快照信息(StockSnapShot)和车型信息(CarTypeDTO)</span><br><span class="line">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">boolean</span> needCompleteOrderDetail;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     * 是否需要组织信息</span><br><span class="line">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">boolean</span> needOrg;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     * 是否需要会员级别信息</span><br><span class="line">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">boolean</span> needOrgMemberLevel;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h2 id="代码实现">代码实现</h2><ol>
-<li>筛选。请使用Guava的Collections2.filter(Collection, Predicate&lt;?&gt;)进行集合的筛选。第二个参数最好是一个Predicate实现类的单例对象(不用重复Predicate实现类对象，创建提高性能，并且可以复用代码)，如：</li>
+<li>筛选。请使用Guava的Collections2.filter(Collection, Predicate&lt;?&gt;)进行集合的筛选。第二个参数最好是一个Predicate实现类的单例对象(不用重复创建Predicate实现类对象，提高性能，并且可以复用代码)，如：</li>
 </ol>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Collection&lt;InquiryDetailDTO&gt; flagNotSetup = Collections2.filter(inquiryDetailDTOs, PartsMainNameFlagNotSetupPredicate.INSTANCE);</span><br></pre></td></tr></table></figure>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">	<span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">PartsMainNameFlagNotSetupPredicate</span> <span class="keyword">extends</span> <span class="title">SafePredicate</span>&lt;<span class="title">InquiryDetailDTO</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> PartsMainNameFlagNotSetupPredicate INSTANCE = <span class="keyword">new</span> PartsMainNameFlagNotSetupPredicate();</span><br><span class="line"></span><br><span class="line">    <span class="annotation">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">safeApply</span><span class="params">(InquiryDetailDTO input)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> PartsMainNameFlag.DEFAULT == input.getPartsMainNameFlag();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <ol>
-<li>转换<br>请使用Collections2.transform(Collection, Function&lt;?&gt;)对集合内的每一个对象进行转换。第二个参数最好是一个Function实现类的单例对象(不用重复Function实现类对象，创建提高性能，并且可以复用代码)，最后别忘了使用Lists.newArrayList()</li>
+<li>转换<br>请使用Collections2.transform(Collection, Function&lt;?&gt;)对集合内的每一个对象进行转换。第二个参数最好是一个Function实现类的单例对象(不用重复创建Function实现类对象，提高性能，并且可以复用代码)，最后别忘了使用Lists.newArrayList()</li>
 </ol>
 <ol>
 <li>排序</li>
@@ -90,6 +71,25 @@
 <li>查询类接口直接返回结果类型，如</li>
 </ol>
 <figure class="highlight jav]]>
+    </summary>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[dubbo服务接口使用Multimap(guava)作为返回值的问题]]></title>
+    <link href="http://yoursite.com/2015/12/02/dubbo-multimap-guava/"/>
+    <id>http://yoursite.com/2015/12/02/dubbo-multimap-guava/</id>
+    <published>2015-12-02T03:29:51.000Z</published>
+    <updated>2015-12-02T03:29:51.000Z</updated>
+    <content type="html"><![CDATA[<p>有位同事在使用dubbo的client调用自己编写的一个dubbo服务时，发现服务接口返回的Multimap（guava）里面的数据永远都是空的。接口定义如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">CarTypePictureService</span> </span>&#123;</span><br><span class="line">   <span class="comment">/**</span><br><span class="line">    * 根据查询车型图片信息</span><br><span class="line">    * <span class="doctag">@param</span> btrIds</span><br><span class="line">    * <span class="doctag">@return</span></span><br><span class="line">    */</span></span><br><span class="line">   Multimap&lt;String, CarTypePictureDTO&gt; findCarTypePictureByBtrIds(List&lt;String&gt; btrIds);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>如果把返回类型改成Map，client就可以正常得到服务端返回的数据。因此问题是出在Multimap本身。</p>
+<p>于是看Multimap的源码，服务端是通过HashMultimap.create()创建的Multimap实例，在这个方法中，最终跟到如下代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">transient</span> Map&lt;K, Collection&lt;V&gt;&gt; map;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">transient</span> <span class="keyword">int</span> totalSize;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span><br><span class="line"> * Creates a new multimap that uses the provided map.</span><br><span class="line"> *</span><br><span class="line"> * <span class="doctag">@param</span> map place to store the mapping from each key to its corresponding</span><br><span class="line"> *     values</span><br><span class="line"> * <span class="doctag">@throws</span> IllegalArgumentException if &#123;<span class="doctag">@code</span> map&#125; is not empty</span><br><span class="line"> */</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="title">AbstractMapBasedMultimap</span><span class="params">(Map&lt;K, Collection&lt;V&gt;&gt; map)</span> </span>&#123;</span><br><span class="line">  checkArgument(map.isEmpty());</span><br><span class="line">  <span class="keyword">this</span>.map = map;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>private transient Map<k, collection<v="">&gt; map 这个成员变量承载了multimap的数据，而它被transient关键字修饰了，这就意味着这个变量不会被序列化，因此dubbo在序列化服务端返回的Multimap<string, cartypepicturedto="">时，里面的map并没有序列化，client反序列化出来的对象自然也不会有数据了。</string,></k,></p>
+<p>总结：写rpc服务时，接口永远不要返回guava的Multimap类型</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>有位同事在使用dubbo的client调用自己编写的一个dubbo服务时，发现服务接口返回的Multimap（guava）里面的数据永远都是空的。接口定义如下：<br><figure class="highlight java"><table><tr><td class="]]>
     </summary>
     
   </entry>
