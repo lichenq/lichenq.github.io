@@ -55,22 +55,43 @@
 
 
 
-<meta name="description" content="title: 测试标题
-Quick StartCreate a new post1$ hexo new &quot;My New Post&quot;
-More info: Writing">
+<meta name="description" content="代码风格指南格式待完善
+接口
+查询类接口直接返回结果类型，如
+
+1List&amp;lt;OrderDTO&amp;gt; queryOrderByIds(List&amp;lt;Integer&amp;gt; orderIds)
+
+操作类接口返回ResultDTO封装类型，如
+
+1ResultDTO&amp;lt;OrderDTO&amp;gt; successOrder(int orderId)
+ResultDTO包含操作的对象，errer">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hexo">
+<meta property="og:title" content="代码风格指南">
 <meta property="og:url" content="http://yoursite.com/2015/12/02/My-New-Post/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="title: 测试标题
-Quick StartCreate a new post1$ hexo new &quot;My New Post&quot;
-More info: Writing">
-<meta property="og:updated_time" content="2015-12-02T03:15:10.000Z">
+<meta property="og:description" content="代码风格指南格式待完善
+接口
+查询类接口直接返回结果类型，如
+
+1List&amp;lt;OrderDTO&amp;gt; queryOrderByIds(List&amp;lt;Integer&amp;gt; orderIds)
+
+操作类接口返回ResultDTO封装类型，如
+
+1ResultDTO&amp;lt;OrderDTO&amp;gt; successOrder(int orderId)
+ResultDTO包含操作的对象，errer">
+<meta property="og:updated_time" content="2015-12-02T03:19:42.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hexo">
-<meta name="twitter:description" content="title: 测试标题
-Quick StartCreate a new post1$ hexo new &quot;My New Post&quot;
-More info: Writing">
+<meta name="twitter:title" content="代码风格指南">
+<meta name="twitter:description" content="代码风格指南格式待完善
+接口
+查询类接口直接返回结果类型，如
+
+1List&amp;lt;OrderDTO&amp;gt; queryOrderByIds(List&amp;lt;Integer&amp;gt; orderIds)
+
+操作类接口返回ResultDTO封装类型，如
+
+1ResultDTO&amp;lt;OrderDTO&amp;gt; successOrder(int orderId)
+ResultDTO包含操作的对象，errer">
 
 
 
@@ -82,7 +103,7 @@ More info: Writing">
   };
 </script>
 
-  <title>  | Hexo </title>
+  <title> 代码风格指南 | Hexo </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="">
@@ -202,7 +223,7 @@ More info: Writing">
             
             
               
-                
+                代码风格指南
               
             
           </h1>
@@ -211,7 +232,7 @@ More info: Writing">
         <div class="post-meta">
           <span class="post-time">
             發表於
-            <time itemprop="dateCreated" datetime="2015-12-02T11:15:10+08:00" content="2015-12-02">
+            <time itemprop="dateCreated" datetime="2015-12-02T11:19:42+08:00" content="2015-12-02">
               2015-12-02
             </time>
           </span>
@@ -235,9 +256,50 @@ More info: Writing">
       
 
       
-        <span itemprop="articleBody"><p>title: 测试标题</p>
-<h2 id="Quick_Start">Quick Start</h2><h3 id="Create_a_new_post">Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
+        <span itemprop="articleBody"><h1 id="代码风格指南">代码风格指南</h1><h2 id="格式">格式</h2><p>待完善</p>
+<h2 id="接口">接口</h2><ol>
+<li>查询类接口直接返回结果类型，如</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">List&lt;OrderDTO&gt; <span class="title">queryOrderByIds</span><span class="params">(List&lt;Integer&gt; orderIds)</span></span></span><br></pre></td></tr></table></figure>
+<ol>
+<li>操作类接口返回ResultDTO封装类型，如</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">ResultDTO&lt;OrderDTO&gt; <span class="title">successOrder</span><span class="params">(<span class="keyword">int</span> orderId)</span></span></span><br></pre></td></tr></table></figure>
+<p>ResultDTO包含操作的对象，errerCode，errorMsg。</p>
+<ol>
+<li>接口中不要声明用不到的参数，超过3个参数时，把多个参数封装成对象。预测未来可能会增加参数时，也封装成对象，方便扩展</li>
+<li>接口的定义要明确，接口名，方法名，参数名都要准确的表达真实的含义，参数如果有固定的取值，请定义成枚举或者接口常量，如果是接口常量请声明该接口。如：</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line"> * 根据订单ID查询支付订单信息</span><br><span class="line"> *</span><br><span class="line"> * <span class="doctag">@param</span> orderId 订单ID</span><br><span class="line"> * <span class="doctag">@param</span> state   支付状态</span><br><span class="line"> * <span class="doctag">@return</span></span><br><span class="line"> * <span class="doctag">@see</span> com.baturu.trade.order2.constants.PayState</span><br><span class="line"> */</span></span><br><span class="line">ResultDTO&lt;List&lt;PayOrderDTO&gt;&gt; queryPayOrdersByOrderIdAndState(<span class="keyword">int</span> orderId, <span class="keyword">int</span> state);</span><br></pre></td></tr></table></figure>
+<ol>
+<li>把操作类接口和查询类接口分开，这是最简单的分离接口的方法。如OrderQueryService,OrderUpdateService</li>
+<li>查询复杂对象时，请在查询接口中声明一个XXFillingParam,如</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">    <span class="comment">/**</span><br><span class="line">     * 根据订单id和填充条件批量查询订单信息</span><br><span class="line">     *</span><br><span class="line">     * <span class="doctag">@param</span> orderIds          订单id列表</span><br><span class="line">     * <span class="doctag">@param</span> orderFillingParam 是否填充相关联的数据</span><br><span class="line">     * <span class="doctag">@return</span></span><br><span class="line">     */</span></span><br><span class="line">    ResultDTO&lt;List&lt;OrderDTO&gt;&gt; queryOrders(List&lt;Integer&gt; orderIds, OrderFillingParam orderFillingParam);</span><br><span class="line">    </span><br><span class="line"><span class="annotation">@Data</span></span><br><span class="line"><span class="annotation">@AllArgsConstructor</span></span><br><span class="line"><span class="annotation">@NoArgsConstructor</span></span><br><span class="line"><span class="annotation">@Builder</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">OrderFillingParam</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     * 是否需要简单的订单明细信息.</span><br><span class="line">     * 并不考虑商品快照(StockSnapShot)和车型信息(CarTypeDTO). 方便统计订单明细的数量等.</span><br><span class="line">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">boolean</span> needMinimumOrderDetail;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     * 是否需要带有商品快照的订单明细.</span><br><span class="line">     * 包括商品快照(StockSnapShot),但不包括车型信息(CarTypeDTO).主要是减少对autoParts的依赖</span><br><span class="line">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">boolean</span> needStockSnapShotOrderDetail;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     * 是否需要完全的订单明细信息. 包括商品快照信息(StockSnapShot)和车型信息(CarTypeDTO)</span><br><span class="line">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">boolean</span> needCompleteOrderDetail;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     * 是否需要组织信息</span><br><span class="line">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">boolean</span> needOrg;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     * 是否需要会员级别信息</span><br><span class="line">     */</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">boolean</span> needOrgMemberLevel;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="代码实现">代码实现</h2><ol>
+<li>筛选。请使用Guava的Collections2.filter(Collection, Predicate&lt;?&gt;)进行集合的筛选。第二个参数最好是一个Predicate实现类的单例对象(不用重复Predicate实现类对象，创建提高性能，并且可以复用代码)，如：</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Collection&lt;InquiryDetailDTO&gt; flagNotSetup = Collections2.filter(inquiryDetailDTOs, PartsMainNameFlagNotSetupPredicate.INSTANCE);</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">	<span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">PartsMainNameFlagNotSetupPredicate</span> <span class="keyword">extends</span> <span class="title">SafePredicate</span>&lt;<span class="title">InquiryDetailDTO</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> PartsMainNameFlagNotSetupPredicate INSTANCE = <span class="keyword">new</span> PartsMainNameFlagNotSetupPredicate();</span><br><span class="line"></span><br><span class="line">    <span class="annotation">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">safeApply</span><span class="params">(InquiryDetailDTO input)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> PartsMainNameFlag.DEFAULT == input.getPartsMainNameFlag();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>转换<br>请使用Collections2.transform(Collection, Function&lt;?&gt;)对集合内的每一个对象进行转换。第二个参数最好是一个Function实现类的单例对象(不用重复Function实现类对象，创建提高性能，并且可以复用代码)，最后别忘了使用Lists.newArrayList()</li>
+</ol>
+<ol>
+<li>排序</li>
+<li>循环</li>
+<li>命名 要表达准确的意思，避免词不达意，甚至南辕北辙</li>
+<li><p>注释 只有在必须写的时候才写。注释是工程师在代码无法完全表达做的事情的时候，做的辅助性质的描述。出现注释一般是如下2种情况。<br> a. 代码写的太烂，看不懂 or 很多坑<br> b. 确实很难理解，需要注释辅助<br> 注释写多了，也会增加维护成本。</p>
+<p>废弃的代码不要注释，直接删除</p>
+</li>
+</ol>
+<p>废弃的接口加上@Deprecated，并且在注释中声明替代接口</p>
+<p>尽早return</p>
+<p>先判断异常情况</p>
+<p>避免倒金字塔式的代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(Inquiry iq:pageList)&#123;		</span><br><span class="line">				<span class="keyword">if</span>(iq.isLock())&#123;</span><br><span class="line">					<span class="keyword">for</span>(UserDTO user:userList)&#123;</span><br><span class="line">						<span class="keyword">if</span>(iq.getLockUserId() == user.getUserId())&#123;</span><br><span class="line">							iq.setUserName(user.getUserName());</span><br><span class="line">							<span class="keyword">break</span>;</span><br><span class="line">						&#125;						</span><br><span class="line">					&#125;					</span><br><span class="line">				&#125;				</span><br><span class="line">			&#125;</span><br></pre></td></tr></table></figure>
+<p>只有在真的需要try catch的时候才try catch，try catch的代码块要尽量小</p>
+<p>不要声明没用到的变量，变量名要准确，不要用一些自己才懂的缩写</p>
+<p>用slf4j</p>
 </span>
       
     </div>
@@ -376,7 +438,7 @@ More info: Writing">
               
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Quick_Start"><span class="nav-number">1.</span> <span class="nav-text">Quick Start</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Create_a_new_post"><span class="nav-number">1.1.</span> <span class="nav-text">Create a new post</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#代码风格指南"><span class="nav-number">1.</span> <span class="nav-text">代码风格指南</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#格式"><span class="nav-number">1.1.</span> <span class="nav-text">格式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#接口"><span class="nav-number">1.2.</span> <span class="nav-text">接口</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码实现"><span class="nav-number">1.3.</span> <span class="nav-text">代码实现</span></a></li></ol></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator">
