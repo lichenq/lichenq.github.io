@@ -202,7 +202,93 @@
             
               
                 
-                <a class="post-title-link" href="/2015/12/02/My-New-Post/" itemprop="url">
+                <a class="post-title-link" href="/2015/12/02/dubbo-multimap-guava/" itemprop="url">
+                  dubbo服务接口返回的Multimap(guava)里面的数据总是空的问题定位
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            發表於
+            <time itemprop="dateCreated" datetime="2015-12-02T11:27:33+08:00" content="2015-12-02">
+              2015-12-02
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        
+          <span itemprop="articleBody">
+            
+              <p>有位同事在使用dubbo的client调用自己编写的一个dubbo服务时，发现服务接口返回的Multimap（guava）里面的数据永远都是空的。接口定义如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">CarTypePictureService</span> </span>&#123;</span><br><span class="line">   <span class="comment">/**</span><br><span class="line">    * 根据查询车型图片信息</span><br><span class="line">    * <span class="doctag">@param</span> btrIds</span><br><span class="line">    * <span class="doctag">@return</span></span><br><span class="line">    */</span></span><br><span class="line">   Multimap&lt;String, CarTypePictureDTO&gt; findCarTypePictureByBtrIds(List&lt;String&gt; btrIds);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>如果把返回类型改成Map，client就可以正常得到服务端返回的数据。因此问题是出在Multimap本身。</p>
+<p>于是看Multimap的源码，服务端是通过HashMultimap.create()创建的Multimap实例，在这个方法中，最终跟到如下代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">transient</span> Map&lt;K, Collection&lt;V&gt;&gt; map;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">transient</span> <span class="keyword">int</span> totalSize;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span><br><span class="line"> * Creates a new multimap that uses the provided map.</span><br><span class="line"> *</span><br><span class="line"> * <span class="doctag">@param</span> map place to store the mapping from each key to its corresponding</span><br><span class="line"> *     values</span><br><span class="line"> * <span class="doctag">@throws</span> IllegalArgumentException if &#123;<span class="doctag">@code</span> map&#125; is not empty</span><br><span class="line"> */</span></span><br><span class="line"><span class="function"><span class="keyword">protected</span> <span class="title">AbstractMapBasedMultimap</span><span class="params">(Map&lt;K, Collection&lt;V&gt;&gt; map)</span> </span>&#123;</span><br><span class="line">  checkArgument(map.isEmpty());</span><br><span class="line">  <span class="keyword">this</span>.map = map;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>private transient Map<k, collection<v="">&gt; map 这个成员变量承载了multimap的数据，而它被transient关键字修饰了，这就意味着这个变量不会被序列化，因此dubbo在序列化服务端返回的Multimap<string, cartypepicturedto="">时，里面的map并没有序列化，client反序列化出来的对象自然也不会有数据了。</string,></k,></p>
+<p>总结：写rpc服务时，接口永远不要返回guava的Multimap类型</p>
+
+            
+          </span>
+        
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2015/12/02/code-style/" itemprop="url">
                   代码风格指南
                 </a>
               
@@ -436,7 +522,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">2</span>
+              <span class="site-state-item-count">3</span>
               <span class="site-state-item-name">文章</span>
             </a>
           </div>
