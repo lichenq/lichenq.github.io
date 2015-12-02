@@ -4,7 +4,7 @@
   
   <link href="/atom.xml" rel="self"/>
   <link href="http://yoursite.com/"/>
-  <updated>2015-12-02T02:49:53.000Z</updated>
+  <updated>2015-12-02T02:53:33.000Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -18,11 +18,13 @@
     <title></title>
     <link href="http://yoursite.com/2015/12/02/My-New-Post/"/>
     <id>http://yoursite.com/2015/12/02/My-New-Post/</id>
-    <published>2015-12-02T02:49:54.000Z</published>
-    <updated>2015-12-02T02:49:53.000Z</updated>
-    <content type="html"><![CDATA[<h1 id="代码风格指南">代码风格指南</h1><h2 id="格式">格式</h2>]]></content>
+    <published>2015-12-02T02:53:33.000Z</published>
+    <updated>2015-12-02T02:53:33.000Z</updated>
+    <content type="html"><![CDATA[<h2 id="Quick_Start">Quick Start</h2><h3 id="Create_a_new_post">Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
+<p>More info: <a href="http://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
+]]></content>
     <summary type="html">
-    <![CDATA[<h1 id="代码风格指南">代码风格指南</h1><h2 id="格式">格式</h2>]]>
+    <![CDATA[<h2 id="Quick_Start">Quick Start</h2><h3 id="Create_a_new_post">Create a new post</h3><figure class="highlight bash"><table><tr><td class="g]]>
     </summary>
     
   </entry>
