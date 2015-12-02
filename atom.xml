@@ -4,7 +4,7 @@
   
   <link href="/atom.xml" rel="self"/>
   <link href="http://yoursite.com/"/>
-  <updated>2015-12-02T03:27:33.000Z</updated>
+  <updated>2015-12-02T03:29:51.000Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,11 +15,11 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title><![CDATA[dubbo服务接口返回的Multimap(guava)里面的数据总是空的问题定位]]></title>
+    <title><![CDATA[dubbo服务接口使用Multimap(guava)作为返回值的问题]]></title>
     <link href="http://yoursite.com/2015/12/02/dubbo-multimap-guava/"/>
     <id>http://yoursite.com/2015/12/02/dubbo-multimap-guava/</id>
-    <published>2015-12-02T03:27:33.000Z</published>
-    <updated>2015-12-02T03:27:33.000Z</updated>
+    <published>2015-12-02T03:29:51.000Z</published>
+    <updated>2015-12-02T03:29:51.000Z</updated>
     <content type="html"><![CDATA[<p>有位同事在使用dubbo的client调用自己编写的一个dubbo服务时，发现服务接口返回的Multimap（guava）里面的数据永远都是空的。接口定义如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">CarTypePictureService</span> </span>&#123;</span><br><span class="line">   <span class="comment">/**</span><br><span class="line">    * 根据查询车型图片信息</span><br><span class="line">    * <span class="doctag">@param</span> btrIds</span><br><span class="line">    * <span class="doctag">@return</span></span><br><span class="line">    */</span></span><br><span class="line">   Multimap&lt;String, CarTypePictureDTO&gt; findCarTypePictureByBtrIds(List&lt;String&gt; btrIds);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>如果把返回类型改成Map，client就可以正常得到服务端返回的数据。因此问题是出在Multimap本身。</p>
 <p>于是看Multimap的源码，服务端是通过HashMultimap.create()创建的Multimap实例，在这个方法中，最终跟到如下代码：</p>
